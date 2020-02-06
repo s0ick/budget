@@ -193,10 +193,11 @@ let start = document.getElementById('start').disabled = true,
       }
     }
   };
-  salaryAmount.addEventListener('input', appData.getValidate);
-  start.addEventListener('click', appData.start);
   incomePlus.addEventListener('click', appData.addIncomeBlock);
   expensesPlus.addEventListener('click', appData.addExpensesBlock);
   periodSelect.addEventListener('input', appData.getRange);
+  
+  salaryAmount.addEventListener('input', appData.getValidate);
+  start.addEventListener('click', appData.start);
   
     
