@@ -1,6 +1,6 @@
 'use strict';
 
-let start = document.getElementById('start').disabled = true,
+let start = document.getElementById('start'),
 
     incomePlus = document.getElementsByTagName('button')[0],
     expensesPlus = document.getElementsByTagName('button')[1],
@@ -18,16 +18,18 @@ let start = document.getElementById('start').disabled = true,
     targetMonthValue = document.getElementsByClassName('target_month-value')[0],
 
     salaryAmount = document.querySelector('.salary-amount'),
-    incomeTitle = document.querySelector('.income-title'),
+    incomeTitle = document.querySelectorAll('.income-title'),
     incomeItem = document.querySelectorAll('.income-items'),
-    expensesTitle = document.querySelector('.expenses-title'),
+    expensesTitle = document.querySelectorAll('.expenses-title'),
     expensesItem = document.querySelectorAll('.expenses-items'),
     additionalExpensesItem = document.querySelector('.additional_expenses-item'),
     depositAmount = document.querySelector('.deposit-amount'),
     depositPercent = document.querySelector('.deposit-percent'),
     targetAmount = document.querySelector('.target-amount'),
     periodSelect = document.querySelector('.period-select'),
-    periodAmount = document.querySelector('.period-amount');
+    periodAmount = document.querySelector('.period-amount'),
+
+    input = document.querySelectorAll('input');
 
   const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -87,9 +89,12 @@ let start = document.getElementById('start').disabled = true,
 
     addIncomeBlock: function() {
       let cloneIncomeItem = incomeItem[0].cloneNode(true);
+      cloneIncomeItem.childNodes[3].value = '';
+      cloneIncomeItem.childNodes[1].value = '';
       incomeItem[0].parentNode.insertBefore(cloneIncomeItem, incomePlus);
       incomeItem = document.querySelectorAll('.income-items');
-      if( incomeItem.length === 3) {
+      validateAll();
+      if(incomeItem.length === 3) {
         incomePlus.style.display = 'none';
       }
     },
@@ -110,8 +115,11 @@ let start = document.getElementById('start').disabled = true,
 
     addExpensesBlock: function() {
       let cloneExpensesItem = expensesItem[0].cloneNode(true);
+      cloneExpensesItem.childNodes[3].value = '';
+      cloneExpensesItem.childNodes[1].value = '';
       expensesItem[0].parentNode.insertBefore(cloneExpensesItem, expensesPlus);
       expensesItem = document.querySelectorAll('.expenses-items');
+      validateAll();
       if(expensesItem.length === 3) {
         expensesPlus.style.display = 'none';
       }
@@ -185,18 +193,44 @@ let start = document.getElementById('start').disabled = true,
       periodAmount.textContent = periodSelect.value;
       return +periodSelect.value;
     },
-    getValidate: function() {
+    getValidateBudget: function() {
       if(salaryAmount.value.trim() === '' || !isNumber(salaryAmount.value)) {
         salaryAmount.value = '';
       } else {
         start.disabled = false;
+        return;
       }
     }
   };
-  salaryAmount.addEventListener('input', appData.getValidate);
+  start.disabled = true;
+  salaryAmount.addEventListener('input', appData.getValidateBudget(salaryAmount.value));
   start.addEventListener('click', appData.start);
   incomePlus.addEventListener('click', appData.addIncomeBlock);
   expensesPlus.addEventListener('click', appData.addExpensesBlock);
   periodSelect.addEventListener('input', appData.getRange);
-  
-    
+
+  function validateAll() {
+    input = document.querySelectorAll('input');
+    input.forEach(function(item){
+      if(item.placeholder === 'Наименование') {
+        item.addEventListener('input', function(){
+          if(isNumber(parseInt(item.value.replace(/\D+/g,"")))) {
+            item.value = '';
+          } else if(item.value.trim() === '' || isNumber(item.value)) {
+            item.value = '';
+          } else {
+            return;
+          }
+        });
+      } else if(item.placeholder === 'Сумма') {
+        item.addEventListener('input', function(){
+          if(item.value.trim() === '' || !isNumber(item.value)) {
+            item.value = '';
+          } else {
+            return;
+          }
+        });
+      }
+    });
+  }
+validateAll();
