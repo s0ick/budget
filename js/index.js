@@ -195,7 +195,7 @@ let start = document.getElementById('start'),
     },
     getValidateBudget: function() {
       if(salaryAmount.value.trim() === '' || !isNumber(salaryAmount.value)) {
-        salaryAmount.value = '';
+        salaryAmount.value =  salaryAmount.value.substring(0, salaryAmount.value.length - 1);
       } else {
         start.disabled = false;
         return;
@@ -203,7 +203,7 @@ let start = document.getElementById('start'),
     }
   };
   start.disabled = true;
-  salaryAmount.addEventListener('input', appData.getValidateBudget(salaryAmount.value));
+  salaryAmount.addEventListener('input', appData.getValidateBudget);
   start.addEventListener('click', appData.start);
   incomePlus.addEventListener('click', appData.addIncomeBlock);
   expensesPlus.addEventListener('click', appData.addExpensesBlock);
@@ -215,7 +215,7 @@ let start = document.getElementById('start'),
       if(item.placeholder === 'Наименование') {
         item.addEventListener('input', function(){
           if(isNumber(parseInt(item.value.replace(/\D+/g,"")))) {
-            item.value = '';
+            item.value = item.value.substring(0, item.value.length - 1);
           } else if(item.value.trim() === '' || isNumber(item.value)) {
             item.value = '';
           } else {
@@ -225,7 +225,7 @@ let start = document.getElementById('start'),
       } else if(item.placeholder === 'Сумма') {
         item.addEventListener('input', function(){
           if(item.value.trim() === '' || !isNumber(item.value)) {
-            item.value = '';
+            item.value = item.value.substring(0, item.value.length - 1);
           } else {
             return;
           }
