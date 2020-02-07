@@ -204,7 +204,7 @@ let start = document.getElementById('start'),
   };
   start.disabled = true;
   salaryAmount.addEventListener('input', appData.getValidateBudget);
-  start.addEventListener('click', appData.start);
+  start.addEventListener('click', appData.start.bind(appData));
   incomePlus.addEventListener('click', appData.addIncomeBlock);
   expensesPlus.addEventListener('click', appData.addExpensesBlock);
   periodSelect.addEventListener('input', appData.getRange);
