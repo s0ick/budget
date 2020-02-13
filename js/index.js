@@ -67,6 +67,10 @@ class AppData {
   reset() {
     start.style.display = 'inline-block';
     cancel.style.display = 'none';
+    depositBank.style.display = 'none';
+    depositAmount.style.display = 'none';
+    depositPercent.style.display = 'none';
+    depositCheck.click();
     input = document.querySelectorAll('input');
     input.forEach((item) => {
       if(item.type === 'text'){
@@ -149,16 +153,16 @@ class AppData {
   }
 
   addExpIncBlock(property) {
-    let propStr = document.querySelectorAll(`.${property.substring(0, (property.length - 4))}-items`),
-        butStr = document.querySelector(`.${property.substring(0, (property.length - 4))}_add`);
-    const cloneItem = propStr[0].cloneNode(true);
+    let propertyStr = document.querySelectorAll(`.${property.substring(0, (property.length - 4))}-items`),
+        buttonStr = document.querySelector(`.${property.substring(0, (property.length - 4))}_add`);
+    const cloneItem = propertyStr[0].cloneNode(true);
     cloneItem.childNodes[1].value = '';
     cloneItem.childNodes[3].value = '';
-    propStr[0].parentNode.insertBefore(cloneItem, butStr);
-    propStr = document.querySelectorAll(`.${property.substring(0, (property.length - 4))}-items`);
+    propertyStr[0].parentNode.insertBefore(cloneItem, buttonStr);
+    propertyStr = document.querySelectorAll(`.${property.substring(0, (property.length - 4))}-items`);
     this.validateAll();
-    if(propStr.length === 3) {
-      butStr.style.display = 'none';
+    if(propertyStr.length === 3) {
+      buttonStr.style.display = 'none';
     }
   }
 
@@ -280,11 +284,9 @@ class AppData {
         depositPercent.addEventListener('input', () => {
           if ((depositPercent.value.trim() === '' || !isNumber(depositPercent.value)) || depositPercent.value > 100) {
             alert('Введите корректное значение в поле проценты'); 
-            start.disabled = true;
             depositPercent.value = depositPercent.value.substring(0, depositPercent.value.length - 1);
-            start.disabled = true;
+            return;
           } else {
-            if(salaryAmount.value !== '') start.disabled = false;
             return;
           }
         });
