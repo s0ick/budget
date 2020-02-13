@@ -58,7 +58,6 @@ class AppData {
     this.getDisable();
     this.getExpInc();
     this.getAddExpInc();
-    this.getMonth();
     this.getBudget();
     this.showResult();
   }
@@ -108,23 +107,19 @@ class AppData {
   }
 
   getExpInc() {
+    expensesItem = document.querySelectorAll('.expenses-items');
+    incomeItem = document.querySelectorAll('.income-items');
+
     const count = item => {
-      const tempStr = item.className.split('-')[0];
-      const itemIncome = item.querySelector(`.${tempStr}-title`).value,
-            itamAmount = item.querySelector(`.${tempStr}-amount`).value;
-      this[tempStr][itemIncome] = itamAmount;
+      const startStr = item.className.split('-')[0],
+            monthStr = startStr + 'Month',
+            itemTitle = item.querySelector(`.${startStr}-title`).value,
+            itamAmount = item.querySelector(`.${startStr}-amount`).value;   
+      this[startStr][itemTitle] = itamAmount;
+      this[monthStr] += +this[startStr][itemTitle];
     };
     incomeItem.forEach(count);
     expensesItem.forEach(count);
-  }
-
-  getMonth() {
-    for(let key in this.income){
-      this.incomeMonth += +this.income[key];
-    }
-    for(let key in this.expenses){
-      this.expensesMonth += +this.expenses[key];
-    }
   }
 
   getAddExpInc() {
@@ -142,7 +137,7 @@ class AppData {
 
   getDisable() {
     const leftInputs = div.querySelectorAll('input');
-    leftInputs.forEach((item) =>{
+    leftInputs.forEach((item) => {
       if(item.type === 'text'){
         item.disabled = true;
       }
