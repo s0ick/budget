@@ -33,7 +33,7 @@ let start = document.getElementById('start'),
 
     input = document.querySelectorAll('input');
 
-  const isNumber = function(n) {
+  const isNumber = n => {
     return !isNaN(parseFloat(n)) && isFinite(n);
   }; 
 
@@ -70,7 +70,7 @@ class AppData {
     start.style.display = 'inline-block';
     cancel.style.display = 'none';
     input = document.querySelectorAll('input');
-    input.forEach(function(item){
+    input.forEach((item) => {
       if(item.type === 'text'){
         item.disabled = false;
         item.value = '';
@@ -95,7 +95,7 @@ class AppData {
 
   showResult() {
     periodSelect.addEventListener('input', () => {
-      let period = periodSelect.value;
+      const period = periodSelect.value;
       incomePeriodValue.value = this.calcPeriod(period);
     });
     budgetMonthValue.value = this.budgetMonth;
@@ -105,14 +105,14 @@ class AppData {
     additionalIncomeValue.value = this.addIncome.join(', ');
     targetMonthValue.value = Math.ceil(this.getTargetMonth());
     do {
-      let period = periodSelect.value;
+      const period = periodSelect.value;
       incomePeriodValue.value = this.calcPeriod(period);
     } while(false);
   }
 
   getDisable() {
-    let leftInputs = div.querySelectorAll('input');
-    leftInputs.forEach(function(item){
+    const leftInputs = div.querySelectorAll('input');
+    leftInputs.forEach((item) =>{
       if(item.type === 'text'){
         item.disabled = true;
       }
@@ -123,7 +123,7 @@ class AppData {
 
   getAddIncome() {
     additionalIncomeItem.forEach((item) => {
-      let itemValue = item.value.trim();
+      const itemValue = item.value.trim();
       if(itemValue !== '') {
         this.addIncome.push(itemValue);
       }
@@ -131,7 +131,7 @@ class AppData {
   }
 
   addIncomeBlock() {
-    let cloneIncomeItem = incomeItem[0].cloneNode(true);
+    const cloneIncomeItem = incomeItem[0].cloneNode(true);
     cloneIncomeItem.childNodes[3].value = '';
     cloneIncomeItem.childNodes[1].value = '';
     incomeItem[0].parentNode.insertBefore(cloneIncomeItem, incomePlus);
@@ -151,13 +151,13 @@ class AppData {
   }
 
   getIncomeMonth() {
-    for(let key in this.income){
+    for(const key in this.income){
       this.incomeMonth += +this.income[key];
     }
   }
 
   addExpensesBlock() {
-    let cloneExpensesItem = expensesItem[0].cloneNode(true);
+    const cloneExpensesItem = expensesItem[0].cloneNode(true);
     cloneExpensesItem.childNodes[3].value = '';
     cloneExpensesItem.childNodes[1].value = '';
     expensesItem[0].parentNode.insertBefore(cloneExpensesItem, expensesPlus);
@@ -177,7 +177,7 @@ class AppData {
   }
 
   getAddExpenses() {
-    let addExpenses =  additionalExpensesItem.value.split(',');
+    const addExpenses =  additionalExpensesItem.value.split(',');
     addExpenses.forEach((item) => {
       item = item.trim();
       if(item !== '') {
@@ -187,7 +187,7 @@ class AppData {
   }
 
   getExpensesMonth() {
-    for(let key in this.expenses){
+    for(const key in this.expenses){
       this.expensesMonth += +this.expenses[key];
     }
   }
@@ -259,9 +259,9 @@ class AppData {
 
   validateAll() {
     input = document.querySelectorAll('input');
-    input.forEach(function(item){
+    input.forEach((item) => {
       if(item.placeholder === 'Наименование') {
-        item.addEventListener('input', function(){
+        item.addEventListener('input',() => {
           if(isNumber(parseInt(item.value.replace(/\D+/g,"")))) {
             item.value = item.value.substring(0, item.value.length - 1);
           } else if(item.value.trim() === '' || isNumber(item.value)) {
@@ -271,7 +271,7 @@ class AppData {
           }
         });
       } else if(item.placeholder === 'Сумма') {
-        item.addEventListener('input', function(){
+        item.addEventListener('input', () => {
           if(item.value.trim() === '' || !isNumber(item.value)) {
             item.value = item.value.substring(0, item.value.length - 1);
           } else {
@@ -282,6 +282,6 @@ class AppData {
     });
   }
 }   
-let tmp = new AppData();
+const tmp = new AppData();
 tmp.eventsListeners();
 tmp.validateAll();
