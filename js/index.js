@@ -216,7 +216,6 @@ periodSelect.addEventListener('input', appData.getRange);
 
 function validateAll() {
   if(arrayInput.length > 20) {
-    console.log('мы тут');
     validateAll();
   }
   arrayInput.forEach(function(item){
