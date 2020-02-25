@@ -28,17 +28,13 @@ let start = document.getElementById('start'),
     targetAmount = document.querySelector('.target-amount'),
     periodSelect = document.querySelector('.period-select'),
     periodAmount = document.querySelector('.period-amount'),
+    calc = document.querySelector('.calc'),
 
     input = document.querySelectorAll('input');
 
   const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
-  };
-  
-  let arrayInput = [];
-  input.forEach((item) =>{
-    arrayInput.push(item);
-  });
+  }; 
 
   let appData = {
     income: {},
@@ -98,7 +94,7 @@ let start = document.getElementById('start'),
       cloneIncomeItem.childNodes[1].value = '';
       incomeItem[0].parentNode.insertBefore(cloneIncomeItem, incomePlus);
       incomeItem = document.querySelectorAll('.income-items');
-      arrayInput.push(incomeItem[incomeItem.length-1]);
+      input = document.querySelectorAll('input');
       if(incomeItem.length === 3) {
         incomePlus.style.display = 'none';
       }
@@ -124,7 +120,7 @@ let start = document.getElementById('start'),
       cloneExpensesItem.childNodes[1].value = '';
       expensesItem[0].parentNode.insertBefore(cloneExpensesItem, expensesPlus);
       expensesItem = document.querySelectorAll('.expenses-items');
-      arrayInput.push(expensesItem[expensesItem.length-1]);
+      input = document.querySelectorAll('input');
       if(expensesItem.length === 3) {
         expensesPlus.style.display = 'none';
       }
@@ -206,38 +202,37 @@ let start = document.getElementById('start'),
         return;
       }
     }
-};
-start.disabled = true;
-salaryAmount.addEventListener('input', appData.getValidateBudget);
-start.addEventListener('click', appData.start.bind(appData));
-incomePlus.addEventListener('click', appData.addIncomeBlock);
-expensesPlus.addEventListener('click', appData.addExpensesBlock);
-periodSelect.addEventListener('input', appData.getRange);
+  };
+  start.disabled = true;
+  salaryAmount.addEventListener('input', appData.getValidateBudget);
+  start.addEventListener('click', appData.start.bind(appData));
+  incomePlus.addEventListener('click', appData.addIncomeBlock);
+  expensesPlus.addEventListener('click', appData.addExpensesBlock);
+  periodSelect.addEventListener('input', appData.getRange);
 
-function validateAll() {
-  if(arrayInput.length > 20) {
-    validateAll();
-  }
-  arrayInput.forEach(function(item){
-    if(item.placeholder === 'Наименование') {
-      item.addEventListener('input', function(){
-        if(isNumber(parseInt(item.value.replace(/\D+/g,"")))) {
-          item.value = item.value.substring(0, item.value.length - 1);
-        } else if(item.value.trim() === '' || isNumber(item.value)) {
-          item.value = '';
+  function validateAll(event) {
+    if(event.target.placeholder === 'Наименование') {
+      event.target.addEventListener('input', function(){
+        if(isNumber(parseInt(event.target.value.replace(/\D+/g,"")))) {
+          event.target.value = event.target.value.substring(0, event.target.value.length - 1);
+        } else if(event.target.value.trim() === '' || isNumber(event.target.value)) {
+          event.target.value = '';
         } else {
           return;
         }
       });
-    } else if(item.placeholder === 'Сумма') {
-      item.addEventListener('input', function(){
-        if(item.value.trim() === '' || !isNumber(item.value)) {
-          item.value = item.value.substring(0, item.value.length - 1);
+    } else if(event.target.placeholder === 'Сумма') {
+      event.target.addEventListener('input', function(){
+        if(event.target.value.trim() === '' || !isNumber(event.target.value)) {
+          event.target.value = event.target.value.substring(0, event.target.value.length - 1);
         } else {
           return;
         }
       });
     }
-  });
-}
-validateAll();
+  }
+calc.addEventListener('click', () => {
+  if(event.target.matches('input')) {
+    validateAll(event);
+  }
+});
